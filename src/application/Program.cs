@@ -1,22 +1,34 @@
-﻿using System.Diagnostics;
-using application;
+﻿using application;
 
 public class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
-        var sw = new Stopwatch();
-        sw.Start();
-        var x = System.IO.File.ReadAllLines(
-            @"C:\Users\molos\source\projects\WordsWinner\src\application\resources\freqrnc2011.csv"
-        ).Select(s => s.Split()).ToArray();
-        sw.Stop();
-        Console.WriteLine(sw.ElapsedMilliseconds);
-        sw.Reset();
-        sw.Start();
-        var wordsWithLength5 = x.Where(s => s[1] == "s" && s[0].Length == 5).Select(s => (s[0], s[2])).OrderByDescending(t => t.Item2).ToArray();
-        var y = wordsWithLength5[0];
-        sw.Stop();
-        Console.WriteLine(sw.ElapsedMilliseconds);
+        /* ConsoleUI
+        Console.WriteLine("Введите буквы");
+        Console.WriteLine("_____");
+        Console.SetCursorPosition(0, 1);
+        var x = Console.ReadLine();
+        Console.WriteLine(x);*/
+
+        var dict = FrequencyDictionary.FrequentWords;
+        var chars = FrequencyDictionary.FrequentLetters;
+        var guesser = new Guesser();
+        //TODO: Вынести писанину в UI? Или в метод Guessera с помощью TextWriter
+        Console.WriteLine("Предлагаю следующее слово:");
+        Console.WriteLine(guesser.GuessNextWord());
+
+        /*//TODO: Вынести цикл в класс Game?
+        for (var i = 1; i < 5; i++)
+        {
+            Console.WriteLine("Введите верно угаданные буквы");
+            guesser.ParseCorrectLetters(Console.ReadLine());
+            Console.WriteLine("Введите неверно угаданные буквы");
+            guesser.ParseWrongLetters(Console.ReadLine());
+            Console.WriteLine("Введите буквы не на своих местах");
+            guesser.ParseInappropriateLetters(Console.ReadLine());
+            Console.WriteLine("Предлагаю следующее слово:");
+            Console.WriteLine(guesser.GuessNextWord());
+        }*/
     }
 }

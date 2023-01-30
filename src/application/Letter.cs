@@ -2,10 +2,7 @@
 
 public struct Letter
 {
-    private IEnumerable<int> _presentPositions;
-    private IEnumerable<int> _absentOnThisPositions;
-
-    public char Lettter;
-    public IEnumerable<int> PresentOn => _presentPositions;
-    public IEnumerable<int> AbsentOn => _absentOnThisPositions;
+    public readonly char Lettter;
+    public HashSet<int> PresentOn { get; set; }
+    public HashSet<int> AbsentOn { get; set; }
 }
