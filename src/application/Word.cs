@@ -2,12 +2,16 @@
 
 public class Word
 {
-    private readonly Letter[] _letters;
-    private readonly HashSet<Letter> _wrongLetters; //этих букв нет в слове
-    private readonly HashSet<Letter> _inppropriateLetters; // эти буквы есть в слове, но не на тех позициях
+    public readonly Letter[] Letters;
+    public readonly HashSet<Letter> WrongLetters; //этих букв нет в слове
+    public readonly HashSet<Letter> InappropriateLetters; // эти буквы есть в слове, но не на тех позициях
 
     public Word(int length)
-        => _letters = new Letter[length];
+    {
+        Letters = new Letter[length];
+        WrongLetters = new HashSet<Letter>();
+        InappropriateLetters = new HashSet<Letter>();
+    }
 
     public void AddCorrectLetters(string letters)
     {
@@ -15,21 +19,29 @@ public class Word
         {
             var ch = letters[i];
             if (char.IsLetter(ch))
-                if (_letters[i] is null)
-                    _letters[i] = new Letter(ch, new[] { i });
+                if (Letters[i] is null)
+                    Letters[i] = new Letter(ch, new[] { i });
         }
     }
 
     public void AddWrongLetters(string letters)
     {
         foreach (var letter in ParseLetters(letters))
-            _wrongLetters.Add(letter);
+        {
+            if (InappropriateLetters.Contains(letter))
+                throw new InvalidOperationException();
+            WrongLetters.Add(letter);
+        }
     }
 
     public void AddInappropriateLetters(string letters)
     {
         foreach (var letter in ParseLetters(letters))
-            _inppropriateLetters.Add(letter);
+        {
+            if (WrongLetters.Contains(letter))
+                throw new InvalidOperationException();
+            InappropriateLetters.Add(letter);
+        }
     }
 
     private IEnumerable<Letter> ParseLetters(string letters)
