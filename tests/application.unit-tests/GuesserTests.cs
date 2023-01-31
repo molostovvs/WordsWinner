@@ -1,6 +1,8 @@
+using FluentAssertions;
+
 namespace application.unit_tests;
 
-public class Tests
+public class GuesserTests
 {
     private Guesser guesser;
 
@@ -10,10 +12,19 @@ public class Tests
         guesser = new Guesser();
     }
 
-    [TestCase("abcde")]
-    public void ParseWrongLettersTest(string letters)
+    [Test]
+    public void GuessFirstWordCorrectly()
     {
-        guesser.ParseWrongLetters(letters);
-        guesser.
+        var result = guesser.GuessFirstWord();
+        result.Should().NotBeEmpty("First guess shold return word");
+        Console.WriteLine(result);
+    }
+
+    [Test]
+    public void GuessFirstWordTwiceFails()
+    {
+        guesser.GuessFirstWord();
+        var secondGuess = () => guesser.GuessFirstWord();
+        secondGuess.Should().Throw<InvalidOperationException>().WithMessage("You cant guess first word on round N 1");
     }
 }
