@@ -3,7 +3,7 @@
 public class Guesser
 {
     private readonly Word _word;
-    private readonly int _round;
+    private int _round;
 
     public Guesser()
     {
@@ -14,7 +14,12 @@ public class Guesser
     public string GuessNextWord()
     {
         if (_round == 0)
+        {
+            _round++;
             return GuessWordWithMostFrequentLetters();
+        }
+
+        _round++;
         return GuessWord();
     }
 
@@ -37,11 +42,13 @@ public class Guesser
 
     public void ParseWrongLetters(string letters)
     {
-        throw new NotImplementedException();
+        var parsedLetters = letters.Where(char.IsLetter).Select(ch => new Letter(ch));
+        _word.AddWrongLetters(parsedLetters);
     }
 
     public void ParseInappropriateLetters(string letters)
     {
-        throw new NotImplementedException();
+        var parsedLetters = letters.Where(char.IsLetter).Select(ch => new Letter(ch));
+        _word.AddInappropriateLetters(parsedLetters);
     }
 }
