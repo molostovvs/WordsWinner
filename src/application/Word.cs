@@ -18,17 +18,44 @@ public class Word
         for (var i = 0; i < letters.Length; i++)
         {
             var ch = letters[i];
-            if (char.IsLetter(ch))
-                if (Letters[i] is null)
-                    Letters[i] = new Letter(ch, new[] { i });
+            if (!char.IsLetter(ch))
+                continue;
+
+            Letter letter;
+            if (!Letters.Where(l => l != null).Select(l => l.Char).Contains(ch))
+            {
+                letter = new Letter(ch, new[] { i });
+            }
+            else
+            {
+                letter = Letters.Where(l => l != null).First(l => l.Char == ch);
+                letter.PresentOn.Add(i);
+            }
+
+            if (WrongLetters.Contains(letter))
+                throw new InvalidOperationException();
+
+            if (IsCurentLetterIsInappropriate(letter))
+                throw new InvalidOperationException();
+
+            if (Letters[i] is null)
+                Letters[i] = new Letter(ch, new[] { i });
         }
+    }
+
+    private bool IsCurentLetterIsInappropriate(Letter letter)
+    {
+        var inappropriateLetter = InappropriateLetters.FirstOrDefault(l => l.Char == letter.Char);
+        if (inappropriateLetter is null)
+            return false;
+        return inappropriateLetter.AbsentOn.Contains(letter.PresentOn.First());
     }
 
     public void AddWrongLetters(string letters)
     {
         foreach (var letter in ParseLetters(letters))
         {
-            if (InappropriateLetters.Contains(letter))
+            if (InappropriateLetters.Contains(letter) || Letters.Contains(letter))
                 throw new InvalidOperationException();
             WrongLetters.Add(letter);
         }
@@ -36,10 +63,17 @@ public class Word
 
     public void AddInappropriateLetters(string letters)
     {
-        foreach (var letter in ParseLetters(letters))
+        for (var i = 0; i < letters.Length; i++)
         {
+            var ch = letters[i];
+            if (!char.IsLetter(ch))
+                continue;
+
+            var letter = new Letter(ch, null, new[] { i });
+
             if (WrongLetters.Contains(letter))
                 throw new InvalidOperationException();
+
             InappropriateLetters.Add(letter);
         }
     }

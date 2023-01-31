@@ -116,6 +116,19 @@ public class WordTests
         addingCorrectLetters.Should().Throw<InvalidOperationException>();
     }
 
+    [TestCase("a    ", "    a")]
+    [TestCase(" a   ", "    a")]
+    [TestCase("  a  ", "    a")]
+    [TestCase("   a ", "    a")]
+    [TestCase("    a", "a    ")]
+    [TestCase("a    ", " aaaa")]
+    public void AddCorrectLettersWhenTheyAreInappropriateOnAnotherPosition(string inappropriate, string correct)
+    {
+        word.AddInappropriateLetters(inappropriate);
+        var addingCorrectLetters = () => word.AddCorrectLetters(correct);
+        addingCorrectLetters.Should().NotThrow();
+    }
+
     private Letter[] ParseStringToLettersWithPositions(string input)
     {
         var res = new Letter[input.Length];
