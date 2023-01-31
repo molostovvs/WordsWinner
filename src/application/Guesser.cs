@@ -2,16 +2,21 @@
 
 public class Guesser
 {
-    private readonly Word _word;
     private int _round;
 
     public Guesser()
     {
-        _word = new Word(5);
         _round = 0;
     }
 
-    public string GuessNextWord()
+    public string GuessFirstWord()
+    {
+        if (_round == 0)
+            return GuessNextWord(null);
+        throw new InvalidOperationException($"You cant guess first word on round N {_round}");
+    }
+
+    public string GuessNextWord(Word word)
     {
         if (_round == 0)
         {
@@ -20,10 +25,10 @@ public class Guesser
         }
 
         _round++;
-        return GuessWord();
+        return GuessWord(word);
     }
 
-    private string GuessWord()
+    private string GuessWord(Word word)
     {
         throw new NotImplementedException();
     }
@@ -33,22 +38,5 @@ public class Guesser
         //TODO: сделать реальный выбор на основании частотности букв
         var rnd = new Random().Next(50);
         return FrequencyDictionary.FrequentWords[rnd].Word;
-    }
-
-    public void ParseCorrectLetters(string letters)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ParseWrongLetters(string letters)
-    {
-        var parsedLetters = letters.Where(char.IsLetter).Select(ch => new Letter(ch));
-        _word.AddWrongLetters(parsedLetters);
-    }
-
-    public void ParseInappropriateLetters(string letters)
-    {
-        var parsedLetters = letters.Where(char.IsLetter).Select(ch => new Letter(ch));
-        _word.AddInappropriateLetters(parsedLetters);
     }
 }

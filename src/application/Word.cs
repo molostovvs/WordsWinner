@@ -9,15 +9,29 @@ public class Word
     public Word(int length)
         => _letters = new Letter[length];
 
-    public void AddWrongLetters(IEnumerable<Letter> letters)
+    public void AddCorrectLetters(string letters)
     {
-        foreach (var letter in letters)
+        for (var i = 0; i < letters.Length; i++)
+        {
+            var ch = letters[i];
+            if (char.IsLetter(ch))
+                if (_letters[i] is null)
+                    _letters[i] = new Letter(ch, new[] { i });
+        }
+    }
+
+    public void AddWrongLetters(string letters)
+    {
+        foreach (var letter in ParseLetters(letters))
             _wrongLetters.Add(letter);
     }
 
-    public void AddInappropriateLetters(IEnumerable<Letter> letters)
+    public void AddInappropriateLetters(string letters)
     {
-        foreach (var letter in letters)
+        foreach (var letter in ParseLetters(letters))
             _inppropriateLetters.Add(letter);
     }
+
+    private IEnumerable<Letter> ParseLetters(string letters)
+        => letters.Where(char.IsLetter).Select(ch => new Letter(ch));
 }
