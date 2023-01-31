@@ -43,14 +43,6 @@ public class Word
         }
     }
 
-    private bool IsCurentLetterIsInappropriate(Letter letter)
-    {
-        var inappropriateLetter = InappropriateLetters.FirstOrDefault(l => l.Char == letter.Char);
-        if (inappropriateLetter is null)
-            return false;
-        return inappropriateLetter.AbsentOn.Contains(letter.PresentOn.First());
-    }
-
     public void AddWrongLetters(string letters)
     {
         foreach (var letter in ParseLetters(letters))
@@ -80,4 +72,12 @@ public class Word
 
     private IEnumerable<Letter> ParseLetters(string letters)
         => letters.Where(char.IsLetter).Select(ch => new Letter(ch));
+    
+    private bool IsCurentLetterIsInappropriate(Letter letter)
+    {
+        var inappropriateLetter = InappropriateLetters.FirstOrDefault(l => l.Char == letter.Char);
+        if (inappropriateLetter is null)
+            return false;
+        return inappropriateLetter.AbsentOn.Contains(letter.PresentOn.First());
+    }
 }
