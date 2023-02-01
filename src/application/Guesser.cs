@@ -30,7 +30,19 @@ public class Guesser
 
     private string GuessWord(Word word)
     {
-        throw new NotImplementedException();
+        //filter wrong letters
+        var words = FrequencyDictionary.FrequentWords.Where(t => t.Word.All(ch => !word.WrongLetters.Contains(ch)));
+        //filter inappropriate letters and correct
+        for (var i = 0; i < word.Letters.Length; i++)
+        {
+            var temp = i;
+            words = words.Where(t => !word.InappropriateLetters[temp].Contains(t.Word[temp]));
+
+            if (word.Letters[i] != default)
+                words = words.Where(t => word.Letters[temp] == t.Word[temp]);
+        }
+
+        return words.First().Word;
     }
 
     private string GuessWordWithMostFrequentLetters()

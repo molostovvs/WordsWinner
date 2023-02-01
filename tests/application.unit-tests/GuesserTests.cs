@@ -27,4 +27,15 @@ public class GuesserTests
         var secondGuess = () => guesser.GuessFirstWord();
         secondGuess.Should().Throw<InvalidOperationException>().WithMessage("You cant guess first word on round N 1");
     }
+
+    [Test]
+    public void GuessTest()
+    {
+        var word = new Word();
+        word.AddWrongLetters("аоедк");
+        word.AddInappropriateLetters("    ь");
+        word.AddCorrectLetters(" и   ");
+        guesser.GuessFirstWord();
+        guesser.GuessNextWord(word);
+    }
 }
