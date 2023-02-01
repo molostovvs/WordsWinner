@@ -12,13 +12,12 @@ public class Program
         Console.WriteLine(x);*/
 
         var word = new Word();
-        var guesser = new Guesser();
         //TODO: Вынести писанину в UI? Или в метод Guessera с помощью TextWriter
         Console.WriteLine("Предлагаю следующее слово:");
-        Console.WriteLine(guesser.GuessFirstWord());
+        Console.WriteLine(Guesser.GuessFirstWord());
 
         //TODO: Вынести цикл в класс Game?
-        for (var i = 1; i < 5; i++)
+        for (var i = 1; i <= 5; i++)
         {
             Console.WriteLine("Введите верно угаданные буквы");
             word.AddCorrectLetters(Console.ReadLine());
@@ -27,7 +26,7 @@ public class Program
             Console.WriteLine("Введите буквы не на своих местах");
             word.AddInappropriateLetters(Console.ReadLine());
             Console.WriteLine("Предлагаю следующее слово:");
-            Console.WriteLine(guesser.GuessNextWord(word));
+            Console.WriteLine(Guesser.GuessNextWord(word));
         }
     }
 }

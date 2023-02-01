@@ -1,34 +1,13 @@
 ﻿namespace application;
 
-public class Guesser
+public static class Guesser
 {
-    private int _round;
-
-    public Guesser()
+    public static string GuessFirstWord()
     {
-        _round = 0;
+        return GuessWordWithMostFrequentLetters();
     }
 
-    public string GuessFirstWord()
-    {
-        if (_round == 0)
-            return GuessNextWord(null);
-        throw new InvalidOperationException($"You cant guess first word on round N {_round}");
-    }
-
-    public string GuessNextWord(Word word)
-    {
-        if (_round == 0)
-        {
-            _round++;
-            return GuessWordWithMostFrequentLetters();
-        }
-
-        _round++;
-        return GuessWord(word);
-    }
-
-    private string GuessWord(Word word)
+    public static string GuessNextWord(Word word)
     {
         //filter wrong letters
         var words = FrequencyDictionary.FrequentWords.Where(t => t.Word.All(ch => !word.WrongLetters.Contains(ch)));
@@ -45,7 +24,7 @@ public class Guesser
         return words.First().Word;
     }
 
-    private string GuessWordWithMostFrequentLetters()
+    private static string GuessWordWithMostFrequentLetters()
     {
         //TODO: сделать реальный выбор на основании частотности букв
         var rnd = new Random().Next(50);
