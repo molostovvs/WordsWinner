@@ -17,6 +17,8 @@ public class Word
 
     public void AddCorrectLetters(string letters)
     {
+        if (letters is null)
+            return;
         for (var i = 0; i < letters.Length; i++)
         {
             var ch = letters[i];
@@ -29,7 +31,7 @@ public class Word
             if (InappropriateLetters[i].Contains(ch))
                 throw new InvalidOperationException();
 
-            if (Letters[i] != default)
+            if (Letters[i] != default && Letters[i] != ch)
                 throw new InvalidOperationException();
 
             Letters[i] = ch;
@@ -38,6 +40,8 @@ public class Word
 
     public void AddWrongLetters(string letters)
     {
+        if (letters is null)
+            return;
         foreach (var letter in letters)
         {
             if (InappropriateLetters.Any(hs => hs.Contains(letter)) || Letters.Contains(letter))
@@ -49,6 +53,8 @@ public class Word
 
     public void AddInappropriateLetters(string letters)
     {
+        if (letters is null)
+            return;
         for (var i = 0; i < letters.Length; i++)
         {
             var ch = letters[i];
@@ -61,15 +67,4 @@ public class Word
             InappropriateLetters[i].Add(ch);
         }
     }
-
-    /*private IEnumerable<Letter> ParseLetters(string letters)
-        => letters.Where(char.IsLetter).Select(ch => new Letter(ch));
-
-    private bool IsCurentLetterIsInappropriate(Letter letter)
-    {
-        var inappropriateLetter = InappropriateLetters.FirstOrDefault(l => l.Char == letter.Char);
-        if (inappropriateLetter is null)
-            return false;
-        return inappropriateLetter.AbsentOn.Contains(letter.PresentOn.First());
-    }*/
 }
