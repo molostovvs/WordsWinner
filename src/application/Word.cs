@@ -2,15 +2,17 @@
 
 public class Word
 {
-    public readonly Letter[] Letters;
-    public readonly HashSet<Letter> WrongLetters; //этих букв нет в слове
-    public readonly HashSet<Letter> InappropriateLetters; // эти буквы есть в слове, но не на тех позициях
+    public readonly char[] Letters;
+    public readonly HashSet<char> WrongLetters; //этих букв нет в слове
+    public readonly HashSet<char>[] InappropriateLetters;
 
-    public Word(int length)
+    public Word(int length = 5)
     {
-        Letters = new Letter[length];
-        WrongLetters = new HashSet<Letter>();
-        InappropriateLetters = new HashSet<Letter>();
+        Letters = new char[5];
+        WrongLetters = new HashSet<char>();
+        InappropriateLetters = new HashSet<char>[length];
+        for (var i = 0; i < length; i++)
+            InappropriateLetters[i] = new HashSet<char>();
     }
 
     public void AddCorrectLetters(string letters)
@@ -21,35 +23,27 @@ public class Word
             if (!char.IsLetter(ch))
                 continue;
 
-            Letter letter;
-            if (!Letters.Where(l => l != null).Select(l => l.Char).Contains(ch))
-            {
-                letter = new Letter(ch, new[] { i });
-            }
-            else
-            {
-                letter = Letters.Where(l => l != null).First(l => l.Char == ch);
-                letter.PresentOn.Add(i);
-            }
-
-            if (WrongLetters.Contains(letter))
+            if (WrongLetters.Contains(ch))
                 throw new InvalidOperationException();
 
-            if (IsCurentLetterIsInappropriate(letter))
+            if (InappropriateLetters[i].Contains(ch))
                 throw new InvalidOperationException();
 
-            if (Letters[i] is null)
-                Letters[i] = new Letter(ch, new[] { i });
+            if (Letters[i] != default)
+                throw new InvalidOperationException();
+
+            Letters[i] = ch;
         }
     }
 
     public void AddWrongLetters(string letters)
     {
-        foreach (var letter in ParseLetters(letters))
+        foreach (var letter in letters)
         {
-            if (InappropriateLetters.Contains(letter) || Letters.Contains(letter))
+            if (InappropriateLetters.Any(hs => hs.Contains(letter)) || Letters.Contains(letter))
                 throw new InvalidOperationException();
-            WrongLetters.Add(letter);
+            if (char.IsLetter(letter))
+                WrongLetters.Add(letter);
         }
     }
 
@@ -61,23 +55,21 @@ public class Word
             if (!char.IsLetter(ch))
                 continue;
 
-            var letter = new Letter(ch, null, new[] { i });
-
-            if (WrongLetters.Contains(letter))
+            if (WrongLetters.Contains(ch))
                 throw new InvalidOperationException();
 
-            InappropriateLetters.Add(letter);
+            InappropriateLetters[i].Add(ch);
         }
     }
 
-    private IEnumerable<Letter> ParseLetters(string letters)
+    /*private IEnumerable<Letter> ParseLetters(string letters)
         => letters.Where(char.IsLetter).Select(ch => new Letter(ch));
-    
+
     private bool IsCurentLetterIsInappropriate(Letter letter)
     {
         var inappropriateLetter = InappropriateLetters.FirstOrDefault(l => l.Char == letter.Char);
         if (inappropriateLetter is null)
             return false;
         return inappropriateLetter.AbsentOn.Contains(letter.PresentOn.First());
-    }
+    }*/
 }
