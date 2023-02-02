@@ -12,20 +12,18 @@ public class GuesserTests
         Console.WriteLine(result);
     }
 
-    [Test]
-    public void GuessTest()
+    [TestCase("к   н", " о а", "рмч")]
+    public void GuessTest(string correct, string inappropriate, string wrong)
     {
         var word = new Word();
-        word.AddWrongLetters("аоедк");
-        word.AddInappropriateLetters("    ь");
-        word.AddCorrectLetters(" и   ");
-        Guesser.GuessFirstWord();
+        word.AddCorrectLetters(correct);
+        word.AddInappropriateLetters(inappropriate);
+        word.AddWrongLetters(wrong);
         Guesser.GuessNextWord(word);
     }
 
-    [TestCase("а о р")]
     [TestCase("ок")]
-    [TestCase("  л у")]
+    [TestCase("сл   ")]
     [TestCase("д о")]
     public void GuessShouldUseInappropriateLetters(string inputInappropriateLetters)
     {
@@ -36,12 +34,33 @@ public class GuesserTests
         for (var i = 0; i < 100; i++)
             guessedWords.Add(Guesser.GuessNextWord(word));
 
-        var inappropriateLetters = word.InappropriateLetters.SelectMany(hs => hs);
+        var inappropriateLetters = word.InappropriateLetters.SelectMany(hs => hs ?? Enumerable.Empty<char>());
 
         foreach (var guessedWord in guessedWords)
         {
             foreach (var inappropriateLetter in inappropriateLetters)
                 guessedWord.Should().Contain(inappropriateLetter.ToString());
+        }
+    }
+
+    [TestCase("ок")]
+    [TestCase("сл   ")]
+    [TestCase("вр")]
+    [TestCase("а")]
+    [TestCase("аоке")]
+    public void GuessShouldntUseWrongLetters(string wrongLetters)
+    {
+        var word = new Word();
+        word.AddWrongLetters(wrongLetters);
+
+        var guessedWords = new List<string>();
+        for (var i = 0; i < 200; i++)
+            guessedWords.Add(Guesser.GuessNextWord(word));
+
+        foreach (var guessedWord in guessedWords)
+        {
+            foreach (var wrongLetter in word.WrongLetters)
+                guessedWord.Should().NotContain(wrongLetter.ToString());
         }
     }
 
