@@ -16,10 +16,12 @@ public class WordTests
     [TestCase("  о  ")]
     [TestCase("   в ")]
     [TestCase("    о")]
+    [TestCase("     ")]
+    [TestCase("")]
     public void AddWrongLetters(string input)
     {
         _word.AddWrongLetters(input);
-        var expected = input.Where(ch => char.IsLetter(ch)).ToHashSet();
+        var expected = input.Where(char.IsLetter).ToHashSet();
         _word.WrongLetters.Should()?.BeEquivalentTo(expected);
     }
 
@@ -42,6 +44,13 @@ public class WordTests
     [TestCase("  о  ")]
     [TestCase("   в ")]
     [TestCase("    о")]
+    [TestCase("     ")]
+    [TestCase("с")]
+    [TestCase(" л")]
+    [TestCase("  о")]
+    [TestCase("   в")]
+    [TestCase("    о")]
+    [TestCase("")]
     public void AddInappropriateLetters(string input)
     {
         _word.AddInappropriateLetters(input);
@@ -81,6 +90,13 @@ public class WordTests
     [TestCase("  о  ")]
     [TestCase("   в ")]
     [TestCase("    о")]
+    [TestCase("     ")]
+    [TestCase("с")]
+    [TestCase(" л")]
+    [TestCase("  о")]
+    [TestCase("   в")]
+    [TestCase("    о")]
+    [TestCase("")]
     public void AddCorrectLetters(string input)
     {
         _word.AddCorrectLetters(input);
@@ -129,8 +145,8 @@ public class WordTests
 
     private char[] ParseStringToCharArray(string input)
     {
-        var res = new char[input.Length];
-        for (var i = 0; i < res.Length; i++)
+        var res = new char[5];
+        for (var i = 0; i < input.Length; i++)
             if (char.IsLetter(input[i]))
                 res[i] = input[i];
 
@@ -139,14 +155,11 @@ public class WordTests
 
     private HashSet<char>[] ParseInappropriateString(string input)
     {
-        var res = new HashSet<char>[input.Length];
+        var res = new HashSet<char>[5];
 
-        for (int i = 0; i < res.Length; i++)
-        {
-            res[i] = new HashSet<char>();
+        for (int i = 0; i < input.Length; i++)
             if (char.IsLetter(input[i]))
-                res[i].Add(input[i]);
-        }
+                res[i] = new HashSet<char>(new[] { input[i] });
 
         return res;
     }

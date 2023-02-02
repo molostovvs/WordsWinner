@@ -21,10 +21,10 @@ public class Program
         {
             Console.WriteLine("Введите верно угаданные буквы");
             word.AddCorrectLetters(Console.ReadLine());
-            Console.WriteLine("Введите неверно угаданные буквы");
-            word.AddWrongLetters(Console.ReadLine());
             Console.WriteLine("Введите буквы не на своих местах");
             word.AddInappropriateLetters(Console.ReadLine());
+            Console.WriteLine("Введите неверно угаданные буквы");
+            word.AddWrongLetters(Console.ReadLine());
             Console.WriteLine("Предлагаю следующее слово:");
             Console.WriteLine(Guesser.GuessNextWord(word));
         }
