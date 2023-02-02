@@ -8,21 +8,20 @@ public static class Guesser
     public static string GuessNextWord(Word word, bool allowDuplicateLetters = true)
     {
         //filter wrong letters
-        var words = FrequencyDictionary.FrequentWords.Where(t => t.Word.All(ch => word.WrongLetters.Contains(ch)));
+        var words = FrequencyDictionary.FrequentWords.Where(t => t.Word.All(ch => !word.WrongLetters.Contains(ch)));
 
         //filter correct and inappropriate letters
         for (var i = 0; i < word.Letters.Length; i++)
         {
             var temp = i;
-            words = words.Where(
-                t => word.InappropriateLetters[temp] != null && word.InappropriateLetters[temp].Contains(t.Word[temp])
-            );
+            if (word.InappropriateLetters[temp] is not null)
+                words = words.Where(t => !word.InappropriateLetters[temp].Contains(t.Word[temp]));
 
             if (word.Letters[i] != default)
                 words = words.Where(t => word.Letters[temp] == t.Word[temp]);
         }
 
-        foreach (var ch in word.InappropriateLetters.SelectMany(hs => hs))
+        foreach (var ch in word.InappropriateLetters.SelectMany(hs => hs ?? Enumerable.Empty<char>()))
             words = words.Where(t => t.Word.Contains(ch));
 
         return words.First().Word;
