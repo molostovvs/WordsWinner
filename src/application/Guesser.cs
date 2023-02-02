@@ -1,42 +1,37 @@
 ﻿namespace application;
 
-public class Guesser
+public static class Guesser
 {
-    private int _round;
+    public static string GuessFirstWord()
+        => GuessWordWithMostFrequentLetters();
 
-    public Guesser()
+    public static string GuessNextWord(Word word, bool allowDuplicateLetters = true)
     {
-        _round = 0;
-    }
+        //filter wrong letters
+        var words = FrequencyDictionary.FrequentWords.Where(t => t.Word.All(ch => word.WrongLetters.Contains(ch)));
 
-    public string GuessFirstWord()
-    {
-        if (_round == 0)
-            return GuessNextWord(null);
-        throw new InvalidOperationException($"You cant guess first word on round N {_round}");
-    }
-
-    public string GuessNextWord(Word word)
-    {
-        if (_round == 0)
+        //filter correct and inappropriate letters
+        for (var i = 0; i < word.Letters.Length; i++)
         {
-            _round++;
-            return GuessWordWithMostFrequentLetters();
+            var temp = i;
+            words = words.Where(
+                t => word.InappropriateLetters[temp] != null && word.InappropriateLetters[temp].Contains(t.Word[temp])
+            );
+
+            if (word.Letters[i] != default)
+                words = words.Where(t => word.Letters[temp] == t.Word[temp]);
         }
 
-        _round++;
-        return GuessWord(word);
+        foreach (var ch in word.InappropriateLetters.SelectMany(hs => hs))
+            words = words.Where(t => t.Word.Contains(ch));
+
+        return words.First().Word;
     }
 
-    private string GuessWord(Word word)
-    {
-        throw new NotImplementedException();
-    }
-
-    private string GuessWordWithMostFrequentLetters()
+    private static string GuessWordWithMostFrequentLetters()
     {
         //TODO: сделать реальный выбор на основании частотности букв
         var rnd = new Random().Next(50);
-        return FrequencyDictionary.FrequentWords[rnd].Word;
+        return FrequencyDictionary.FrequentWords.Where(t => t.Word.ConsistsOfUniqueElements()).Skip(rnd).First().Word;
     }
 }

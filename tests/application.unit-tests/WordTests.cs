@@ -4,13 +4,11 @@ namespace application.unit_tests;
 
 public class WordTests
 {
-    private Word word;
+    private Word _word = null!;
 
     [SetUp]
     public void Setup()
-    {
-        word = new Word(5);
-    }
+        => _word = new Word();
 
     [TestCase("слово")]
     [TestCase("с    ")]
@@ -18,11 +16,13 @@ public class WordTests
     [TestCase("  о  ")]
     [TestCase("   в ")]
     [TestCase("    о")]
+    [TestCase("     ")]
+    [TestCase("")]
     public void AddWrongLetters(string input)
     {
-        word.AddWrongLetters(input);
-        var letters = ParseStringToLetters(input);
-        word.WrongLetters.Should().BeEquivalentTo(letters.ToHashSet());
+        _word.AddWrongLetters(input);
+        var expected = input.Where(char.IsLetter).ToHashSet();
+        _word.WrongLetters.Should()?.BeEquivalentTo(expected);
     }
 
     [TestCase("слово")]
@@ -33,9 +33,9 @@ public class WordTests
     [TestCase("    о")]
     public void AddWrongLettersWhenTheyAreCorrect(string input)
     {
-        word.AddCorrectLetters(input);
-        var addingWrongLetters = () => word.AddWrongLetters(input);
-        addingWrongLetters.Should().Throw<InvalidOperationException>();
+        _word.AddCorrectLetters(input);
+        var addingWrongLetters = () => _word.AddWrongLetters(input);
+        addingWrongLetters.Should()?.Throw<InvalidOperationException>();
     }
 
     [TestCase("слово")]
@@ -44,11 +44,18 @@ public class WordTests
     [TestCase("  о  ")]
     [TestCase("   в ")]
     [TestCase("    о")]
+    [TestCase("     ")]
+    [TestCase("с")]
+    [TestCase(" л")]
+    [TestCase("  о")]
+    [TestCase("   в")]
+    [TestCase("    о")]
+    [TestCase("")]
     public void AddInappropriateLetters(string input)
     {
-        word.AddInappropriateLetters(input);
-        var letters = ParseStringToLetters(input);
-        word.InappropriateLetters.Should().BeEquivalentTo(letters.ToHashSet());
+        _word.AddInappropriateLetters(input);
+        var expected = ParseInappropriateString(input);
+        _word.InappropriateLetters.Should()?.BeEquivalentTo(expected);
     }
 
     [TestCase("слово")]
@@ -59,9 +66,9 @@ public class WordTests
     [TestCase("    о")]
     public void AddWrongLettersWhenTheyAreInappropriate(string input)
     {
-        word.AddInappropriateLetters(input);
-        var addingWrongLetters = () => word.AddWrongLetters(input);
-        addingWrongLetters.Should().Throw<InvalidOperationException>();
+        _word.AddInappropriateLetters(input);
+        var addingWrongLetters = () => _word.AddWrongLetters(input);
+        addingWrongLetters.Should()?.Throw<InvalidOperationException>();
     }
 
     [TestCase("слово")]
@@ -72,9 +79,9 @@ public class WordTests
     [TestCase("    о")]
     public void AddInappropriateLettersWhenTheyAreWrong(string input)
     {
-        word.AddWrongLetters(input);
-        var addingInappropriateLetters = () => word.AddInappropriateLetters(input);
-        addingInappropriateLetters.Should().Throw<InvalidOperationException>();
+        _word.AddWrongLetters(input);
+        var addingInappropriateLetters = () => _word.AddInappropriateLetters(input);
+        addingInappropriateLetters.Should()?.Throw<InvalidOperationException>();
     }
 
     [TestCase("слово")]
@@ -83,11 +90,18 @@ public class WordTests
     [TestCase("  о  ")]
     [TestCase("   в ")]
     [TestCase("    о")]
+    [TestCase("     ")]
+    [TestCase("с")]
+    [TestCase(" л")]
+    [TestCase("  о")]
+    [TestCase("   в")]
+    [TestCase("    о")]
+    [TestCase("")]
     public void AddCorrectLetters(string input)
     {
-        word.AddCorrectLetters(input);
-        var letters = ParseStringToLettersWithPositions(input);
-        word.Letters.Should().BeEquivalentTo(letters, opt => opt.WithStrictOrdering());
+        _word.AddCorrectLetters(input);
+        var expected = ParseStringToCharArray(input);
+        _word.Letters.Should()?.BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
     }
 
     [TestCase("слово")]
@@ -98,9 +112,9 @@ public class WordTests
     [TestCase("    о")]
     public void AddCorrectLettersWhenTheyAreWrong(string input)
     {
-        word.AddWrongLetters(input);
-        var addingCorrectLetters = () => word.AddCorrectLetters(input);
-        addingCorrectLetters.Should().Throw<InvalidOperationException>();
+        _word.AddWrongLetters(input);
+        var addingCorrectLetters = () => _word.AddCorrectLetters(input);
+        addingCorrectLetters.Should()?.Throw<InvalidOperationException>();
     }
 
     [TestCase("слово")]
@@ -111,9 +125,9 @@ public class WordTests
     [TestCase("    о")]
     public void AddCorrectLettersWhenTheyAreInappropriate(string input)
     {
-        word.AddInappropriateLetters(input);
-        var addingCorrectLetters = () => word.AddCorrectLetters(input);
-        addingCorrectLetters.Should().Throw<InvalidOperationException>();
+        _word.AddInappropriateLetters(input);
+        var addingCorrectLetters = () => _word.AddCorrectLetters(input);
+        addingCorrectLetters.Should()?.Throw<InvalidOperationException>();
     }
 
     [TestCase("a    ", "    a")]
@@ -124,28 +138,29 @@ public class WordTests
     [TestCase("a    ", " aaaa")]
     public void AddCorrectLettersWhenTheyAreInappropriateOnAnotherPosition(string inappropriate, string correct)
     {
-        word.AddInappropriateLetters(inappropriate);
-        var addingCorrectLetters = () => word.AddCorrectLetters(correct);
-        addingCorrectLetters.Should().NotThrow();
+        _word.AddInappropriateLetters(inappropriate);
+        var addingCorrectLetters = () => _word.AddCorrectLetters(correct);
+        addingCorrectLetters.Should()?.NotThrow();
     }
 
-    private Letter[] ParseStringToLettersWithPositions(string input)
+    private char[] ParseStringToCharArray(string input)
     {
-        var res = new Letter[input.Length];
+        var res = new char[5];
         for (var i = 0; i < input.Length; i++)
-        {
-            var ch = input[i];
-            if (char.IsLetter(ch))
-                res[i] = new Letter(ch, new[] { i });
-        }
+            if (char.IsLetter(input[i]))
+                res[i] = input[i];
 
         return res;
     }
 
-    private IEnumerable<Letter> ParseStringToLetters(string input)
+    private HashSet<char>[] ParseInappropriateString(string input)
     {
-        foreach (var letter in input)
-            if (char.IsLetter(letter))
-                yield return new Letter(letter);
+        var res = new HashSet<char>[5];
+
+        for (int i = 0; i < input.Length; i++)
+            if (char.IsLetter(input[i]))
+                res[i] = new HashSet<char>(new[] { input[i] });
+
+        return res;
     }
 }
