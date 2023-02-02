@@ -22,4 +22,37 @@ public class GuesserTests
         Guesser.GuessFirstWord();
         Guesser.GuessNextWord(word);
     }
+
+    [TestCase("а о р")]
+    [TestCase("ок")]
+    [TestCase("  л у")]
+    [TestCase("д о")]
+    public void GuessShouldUseInappropriateLetters(string inputInappropriateLetters)
+    {
+        var word = new Word();
+        word.AddInappropriateLetters(inputInappropriateLetters);
+
+        var guessedWords = new List<string>();
+        for (var i = 0; i < 100; i++)
+            guessedWords.Add(Guesser.GuessNextWord(word));
+
+        var inappropriateLetters = word.InappropriateLetters.SelectMany(hs => hs);
+
+        foreach (var guessedWord in guessedWords)
+        {
+            foreach (var inappropriateLetter in inappropriateLetters)
+                guessedWord.Should().Contain(inappropriateLetter.ToString());
+        }
+    }
+
+    [Test]
+    public void GuessFirstWordShouldReturnWordWithoutRepetitiveLetters()
+    {
+        var guessedWords = new List<string>();
+        for (var i = 0; i < 100; i++)
+            guessedWords.Add(Guesser.GuessFirstWord());
+
+        foreach (var word in guessedWords)
+            word.ToCharArray().Should().OnlyHaveUniqueItems();
+    }
 }
