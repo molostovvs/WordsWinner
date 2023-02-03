@@ -1,13 +1,18 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace application;
+namespace WordsWinner;
 
 public static class FrequencyDictionary
 {
     private const string DictionaryName = "freqrnc2011.csv";
+
+    /// <summary>
+    ///     Sorted list of words and their frequency
+    /// </summary>
     public static readonly List<(string Word, float Frequency)> FrequentWords;
-    public static readonly Dictionary<char, int> FrequentLetters;
+
+    private static readonly Dictionary<char, int> FrequentLetters;
 
     static FrequencyDictionary()
     {

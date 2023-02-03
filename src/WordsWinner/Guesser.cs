@@ -1,10 +1,20 @@
-﻿namespace application;
+﻿namespace WordsWinner;
 
 public static class Guesser
 {
+    /// <summary>
+    ///     Guesses the first word
+    /// </summary>
+    /// <returns>Guessed word</returns>
     public static string GuessFirstWord()
         => GuessWordWithMostFrequentLetters();
 
+    /// <summary>
+    ///     Based on the given word, guesses the next word
+    /// </summary>
+    /// <param name="word">A word on the basis of which the next word is guessed</param>
+    /// <param name="allowDuplicateLetters">A parameter that indicates whether a guessed word can contain duplicate letters</param>
+    /// <returns>Guessed word</returns>
     public static string GuessNextWord(Word word, bool allowDuplicateLetters = true)
     {
         //filter wrong letters
