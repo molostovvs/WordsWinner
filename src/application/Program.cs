@@ -4,19 +4,13 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        /* ConsoleUI
-        Console.WriteLine("Введите буквы");
-        Console.WriteLine("_____");
-        Console.SetCursorPosition(0, 1);
-        var x = Console.ReadLine();
-        Console.WriteLine(x);*/
-
+        //TODO: Move all writings to consolte to UI class
+        //TODO: Move logic to Game class
+        //TODO: Allow modify word length and rounds count before start
         var word = new Word();
-        //TODO: Вынести писанину в UI? Или в метод Guessera с помощью TextWriter
         Console.WriteLine("Предлагаю следующее слово:");
         Console.WriteLine(Guesser.GuessFirstWord());
 
-        //TODO: Вынести цикл в класс Game?
         for (var i = 1; i <= 5; i++)
         {
             Console.WriteLine("Введите верно угаданные буквы");
