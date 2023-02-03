@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "application", "src\application\application.csproj", "{42BA0F9A-F2E7-4555-83A2-A1B6E6428952}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsWinner", "src\WordsWinner\WordsWinner.csproj", "{42BA0F9A-F2E7-4555-83A2-A1B6E6428952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "application.unit-tests", "tests\application.unit-tests\application.unit-tests.csproj", "{25818BE3-9C54-4ABC-B0D1-C0D13C907793}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsWinner.Tests", "tests\WordsWinner.Tests\WordsWinner.Tests.csproj", "{25818BE3-9C54-4ABC-B0D1-C0D13C907793}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
