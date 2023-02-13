@@ -58,12 +58,20 @@ public class Word
         if (letters is null)
             return;
         foreach (var letter in letters)
-        {
-            if (InappropriateLetters.Any(hs => hs != null && hs.Contains(letter)) || Letters.Contains(letter))
-                throw new InvalidOperationException();
-            if (char.IsLetter(letter))
+            if (Letters.Contains(letter))
+            {
+                var index = Array.IndexOf(Letters, letter);
+                for (var i = 0; i < Letters.Length; i++)
+                    if (i != index)
+                    {
+                        InappropriateLetters[i] ??= new HashSet<char>();
+                        InappropriateLetters[i].Add(letter);
+                    }
+            }
+            else if (char.IsLetter(letter))
+            {
                 WrongLetters.Add(letter);
-        }
+            }
     }
 
     /// <summary>

@@ -35,7 +35,8 @@ public class WordTests
     {
         _word.AddCorrectLetters(input);
         var addingWrongLetters = () => _word.AddWrongLetters(input);
-        addingWrongLetters.Should()?.Throw<InvalidOperationException>();
+        addingWrongLetters.Should()?.NotThrow<InvalidOperationException>();
+        var chars = input.Where(char.IsLetter);
     }
 
     [TestCase("слово")]
@@ -68,7 +69,7 @@ public class WordTests
     {
         _word.AddInappropriateLetters(input);
         var addingWrongLetters = () => _word.AddWrongLetters(input);
-        addingWrongLetters.Should()?.Throw<InvalidOperationException>();
+        addingWrongLetters.Should()?.NotThrow<InvalidOperationException>();
     }
 
     [TestCase("слово")]
