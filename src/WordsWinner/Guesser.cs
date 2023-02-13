@@ -34,6 +34,9 @@ public static class Guesser
         foreach (var ch in word.InappropriateLetters.SelectMany(hs => hs ?? Enumerable.Empty<char>()))
             words = words.Where(t => t.Word.Contains(ch));
 
+        if (word.Letters.Where(char.IsLetter).Count() < 3)
+            words = words.Where(word => word.Word.ConsistsOfUniqueElements());
+
         return words.First().Word;
     }
 
