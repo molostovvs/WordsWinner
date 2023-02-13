@@ -4,10 +4,10 @@ namespace WordsWinner;
 
 public static class UI
 {
-    public static void AskForUserInput(string prompt, Action<string?> action)
+    public static void AskForUserInput(string prompt, Action<string?> action, StringFiller filler = StringFiller.Blank)
     {
         Print(prompt);
-        ReadTo(action);
+        ReadTo(action, filler);
         ClearLastLines(2);
     }
 
@@ -31,11 +31,28 @@ public static class UI
         Console.SetCursorPosition(0, start);
     }
 
-    private static void ReadTo(Action<string?> addCorrectLetters)
-        => addCorrectLetters.Invoke(Console.ReadLine());
-
-    enum StringFiller
+    private static void ReadTo(Action<string?> addLettersToCategory, StringFiller filler)
     {
-        Underscore, Numbers, None,
+        FillString(filler);
+        addLettersToCategory.Invoke(Console.ReadLine());
+    }
+
+    private static void FillString(StringFiller stringFiller)
+    {
+        var defColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        if (stringFiller == StringFiller.Underscore)
+            Console.Write(new string('_', 5));
+        if (stringFiller == StringFiller.Numbers)
+            for (var i = 1; i <= 5; i++)
+                Console.Write(i);
+
+        Console.SetCursorPosition(0, Console.CursorTop);
+        Console.ForegroundColor = defColor;
+    }
+
+    public enum StringFiller
+    {
+        Underscore, Numbers, Blank,
     }
 }

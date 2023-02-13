@@ -11,14 +11,11 @@ public static class Program
         Console.Title = "Words Winner v0.1.0";
         Console.Clear();
         var word = new Word();
+        UI.ProvideUser("Предлагаю первое слово:", Guesser.GuessFirstWord());
 
         for (var i = 0; i <= 5; i++)
         {
-            if (i == 0)
-                UI.ProvideUser("Предлагаю первое слово:", Guesser.GuessFirstWord());
-
-            UI.AskForUserInput("Введите верно угаданные буквы:", word.AddCorrectLetters);
-
+            UI.AskForUserInput("Введите верно угаданные буквы:", word.AddCorrectLetters, UI.StringFiller.Numbers);
             if (word.Letters.All(ch => ch != default)) //TODO: maybe move this to GameWon method of Game.cs
             {
                 Console.Clear();
@@ -26,8 +23,8 @@ public static class Program
                 break;
             }
 
-            UI.AskForUserInput("Введите буквы не на своих местах:", word.AddInappropriateLetters);
-            UI.AskForUserInput("Введите неверно угаданные буквы:", word.AddWrongLetters);
+            UI.AskForUserInput("Введите буквы не на своих местах:", word.AddInappropriateLetters, UI.StringFiller.Numbers);
+            UI.AskForUserInput("Введите неверно угаданные буквы:", word.AddWrongLetters, UI.StringFiller.Underscore);
             UI.ProvideUser("Предлагаю следующее слово:", Guesser.GuessNextWord(word));
         }
     }
