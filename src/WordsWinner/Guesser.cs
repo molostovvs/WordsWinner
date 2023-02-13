@@ -39,7 +39,7 @@ public static class Guesser
 
     private static string GuessWordWithMostFrequentLetters()
     {
-        //TODO: сделать реальный выбор на основании частотности букв
+        //TODO: really choose the word with most frequent letters
         var rnd = new Random().Next(50);
         return FrequencyDictionary.FrequentWords.Where(t => t.Word.ConsistsOfUniqueElements()).Skip(rnd).First().Word;
     }
