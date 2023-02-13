@@ -6,6 +6,7 @@ public static class Program
     {
         //TODO: Move logic to Game class
         //TODO: Allow modify word length and rounds count before start
+        //TODO: Allow reguess word for example tinkoff doesnt know about "будни"
 
         Console.Title = "Words Winner v0.1.0";
         Console.Clear();
