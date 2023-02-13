@@ -15,7 +15,7 @@ public static class Program
         for (var i = 0; i <= 5; i++)
         {
             if (i == 0)
-                UI.ProvideUser("Предлагаю превое слово:", Guesser.GuessFirstWord());
+                UI.ProvideUser("Предлагаю первое слово:", Guesser.GuessFirstWord());
 
             UI.AskForUserInput("Введите верно угаданные буквы", word.AddCorrectLetters);
 
