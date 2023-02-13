@@ -17,18 +17,18 @@ public static class Program
             if (i == 0)
                 UI.ProvideUser("Предлагаю первое слово:", Guesser.GuessFirstWord());
 
-            UI.AskForUserInput("Введите верно угаданные буквы", word.AddCorrectLetters);
+            UI.AskForUserInput("Введите верно угаданные буквы:", word.AddCorrectLetters);
 
-            if (word.Letters.All(ch => ch != default)) //TODO: maybe move this to GameWon method fo Game.cs
+            if (word.Letters.All(ch => ch != default)) //TODO: maybe move this to GameWon method of Game.cs
             {
                 Console.Clear();
                 UI.Print("CONGRATS!");
                 break;
             }
 
-            UI.AskForUserInput("Введите буквы не на своих местах", word.AddInappropriateLetters);
-            UI.AskForUserInput("Введите неверно угаданные буквы", word.AddWrongLetters);
-            UI.ProvideUser("Предлагаю следующее слово", Guesser.GuessNextWord(word));
+            UI.AskForUserInput("Введите буквы не на своих местах:", word.AddInappropriateLetters);
+            UI.AskForUserInput("Введите неверно угаданные буквы:", word.AddWrongLetters);
+            UI.ProvideUser("Предлагаю следующее слово:", Guesser.GuessNextWord(word));
         }
     }
 }
