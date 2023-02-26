@@ -7,6 +7,7 @@ public static class Program
         //TODO: Move logic to Game class
         //TODO: Allow modify word length and rounds count before start
         //TODO: Allow reguess word for example tinkoff doesnt know about "будни"
+        //TODO: Allow guess word with 5 different letters on any turn, for example its impossible to guess "лесть" in 5 turns
 
         Console.Title = "Words Winner v0.1.0";
         Console.Clear();
