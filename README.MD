@@ -1,7 +1,10 @@
-This program is created to solve Words Game. Words game is a game where a word is guessed (of a certain length) and it needs to be guessed in a certain number of attempts.
+This program is created to solve Words Game (Initially, for a "5 letters" in Tinkoff app).
 
-Features:
+This is the very first version of the program, so it only works with a frequency dictionary of the Russian language and words with a length of 5 letters.
 
-1. The length of the guessed word is adjusted in the game
-2. The game uses frequency dictionaries to increase the chance of guessing a word
-3. The game at each step offers the user a word that most likely fits the guessed word, which she does not know (based on the already guessed letters)
+Coming features:
+
+1. Reguess word if the checking system does not know it;
+2. Allow to choose the length of the word and the number of rounds;
+3. Allow passing arguments to configure the program;
+4. Select and provide your own frequency dictionaries in any language
