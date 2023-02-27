@@ -8,7 +8,7 @@ public static class Program
         //TODO: Allow modify word length and rounds count before start
         //TODO: Allow reguess word for example tinkoff doesnt know about "будни"
 
-        Console.Title = "Words Winner v0.1.0";
+        Console.Title = "Words Winner v0.1.0"; //TODO: take version from assembly
         Console.Clear();
         var word = new Word();
         UI.ProvideUser("Предлагаю первое слово:", Guesser.GuessFirstWord());
